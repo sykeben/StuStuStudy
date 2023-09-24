@@ -6,8 +6,8 @@ from ..menu import Menu, MenuItem, actions
 # Define populator for set properties menu.
 def propertiesMenuPopulator(menu:Menu):
     common.currentSetPopulator(menu)
-    menu.findItem("ST").description = f"\"{common.currentSet.title}\""
-    menu.findItem("SD").description = f"\"{common.currentSet.description}\""
+    menu.findItem("T").description = f"\"{common.currentSet.title}\""
+    menu.findItem("D").description = f"\"{common.currentSet.description}\""
 
 # Define set title static action.
 def setTitleStaticAction(item:MenuItem):
@@ -21,5 +21,5 @@ def setDescriptionStaticAction(item:MenuItem):
 propertiesMenu = Menu("Set Properties", populator=propertiesMenuPopulator)
 propertiesMenu.createItem("X", "Exit", "Exits this menu.", actions.exitAction())
 propertiesMenu.separate()
-propertiesMenu.createItem("ST", "Set Title", "", actions.staticAction(setTitleStaticAction))
-propertiesMenu.createItem("SD", "Set Description", "", actions.staticAction(setDescriptionStaticAction))
+propertiesMenu.createItem("T", "Set Title", "", actions.staticAction(setTitleStaticAction))
+propertiesMenu.createItem("D", "Set Description", "", actions.staticAction(setDescriptionStaticAction))
