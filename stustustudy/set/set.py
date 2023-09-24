@@ -8,11 +8,13 @@ class Set:
     def __init__(
             self,
             title:str = "Untitled Set",
+            description:str = "",
             terms:list[SetTerm]|None = None
         ):
 
         # Set parameters.
         self.title = title
+        self.description = description
         self.terms = terms if terms else list()
 
     # (Internal) Add to Terms: Adds a term to the set at the end or at an index.

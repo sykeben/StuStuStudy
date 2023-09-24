@@ -9,7 +9,7 @@ from ..utils.ui import pause
 
 # Submenu action: Activates auto on a submenu.
 def submenuAction(submenu:Menu):
-    def action(item:MenuItem, transport:MenuTransport) -> MenuTransport:
+    def action(item:MenuItem, transport:MenuTransport):
         submenu.auto()
         return transport
     return action
@@ -17,19 +17,19 @@ def submenuAction(submenu:Menu):
 # Exit action: Exits the current menu.
 def exitAction(confirm:bool = False):
     if (confirm):
-        def action(item:MenuItem, transport:MenuTransport) -> MenuTransport:
+        def action(item:MenuItem, transport:MenuTransport):
             if (Confirm.ask("Are you sure you want to exit?")):
                 transport.setExit()
             return transport
     else:
-        def action(item:MenuItem, transport:MenuTransport) -> MenuTransport:
+        def action(item:MenuItem, transport:MenuTransport):
             transport.setExit()
             return transport
     return action
 
 # Text action: Displays a page of text.
 def textAction(title:str|None = None, subtitle:str|None = None, text:str|None = None):
-    def action(item:MenuItem, transport:MenuTransport) -> MenuTransport:
+    def action(item:MenuItem, transport:MenuTransport):
         if (title):
             console.print(f"[b]{title}[/b]")
         if (subtitle):
@@ -50,7 +50,7 @@ def placeholderAction():
 
 # Static action: Executes a static-like method that doesn't modify the transport.
 def staticAction(method:Callable[[MenuItem], None]):
-    def action(item:MenuItem, transport:MenuTransport) -> MenuTransport:
+    def action(item:MenuItem, transport:MenuTransport):
         method(item)
         return transport
     return action
