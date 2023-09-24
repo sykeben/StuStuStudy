@@ -4,7 +4,7 @@ from .menu import Menu
 from .menuitem import MenuItem
 from .menutransport import MenuTransport
 from ..console import console
-from ..utils.ui import ezPause, ezConfirm
+from ..utils.ui import ezTitle, ezPause, ezConfirm
 
 # Submenu action: Activates auto on a submenu.
 def submenuAction(submenu:Menu):
@@ -16,6 +16,7 @@ def submenuAction(submenu:Menu):
 # Exit action: Exits the current menu.
 def exitAction(confirm:bool = False):
     if (confirm):
+        ezTitle("Exiting")
         def action(item:MenuItem, transport:MenuTransport):
             if (ezConfirm("exit")):
                 transport.setExit()

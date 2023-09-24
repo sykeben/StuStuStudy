@@ -1,6 +1,6 @@
 # Imports.
 import stustustudy.app.common as common
-from ..utils.ui import ezPromptStr
+from ..utils.ui import ezTitle, ezPromptStr
 from ..menu import Menu, MenuItem, actions
 
 # Define populator for set properties menu.
@@ -11,11 +11,13 @@ def propertiesMenuPopulator(menu:Menu, firstTime:bool):
 
 # Define set title static action.
 def setTitleStaticAction(item:MenuItem):
-    common.currentSet.title = ezPromptStr("new title", common.currentSet.title)
+    ezTitle("Changing Set Title")
+    common.currentSet.title = ezPromptStr("new title", common.currentSet.title, defaultAsCurrent=True)
 
 # Define set description static action.
 def setDescriptionStaticAction(item:MenuItem):
-    common.currentSet.description = ezPromptStr("new description", common.currentSet.description)
+    ezTitle("Changing Set Description")
+    common.currentSet.description = ezPromptStr("new description", common.currentSet.description, defaultAsCurrent=True)
 
 # Define set properties menu.
 propertiesMenu = Menu("Set Properties", populator=propertiesMenuPopulator)

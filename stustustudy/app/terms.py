@@ -1,12 +1,16 @@
 # Imports.
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
-from ..utils.ui import ezPromptStr
+from ..utils.ui import ezTitle, ezPromptStr
 from .termEdit import termEditMenuStaticAction
 
 # Define add term action.
 def addTermStaticAction(item:MenuItem):
-    common.currentSet.createTerm(ezPromptStr("term"), ezPromptStr("definition"))
+    ezTitle("Creating a New Term")
+    common.currentSet.createTerm(
+        ezPromptStr("term"),
+        ezPromptStr("definition")
+    )
 
 # Define populator for set terms menu.
 def termsMenuPopulator(menu:Menu, firstTime:bool):

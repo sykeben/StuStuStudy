@@ -2,7 +2,7 @@
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
 from ..set import Set, SetTerm
-from ..utils import ezPromptStr, ezConfirm
+from ..utils import ezTitle, ezPromptStr, ezConfirm
 from .properties import propertiesMenu
 from .terms import termsMenu
 
@@ -26,6 +26,7 @@ def mainMenuPopulator(menu:Menu, firstTime:bool):
 
 # Define new set static action.
 def newSetStaticAction(item:MenuItem):
+    ezTitle("Creating a New Set")
     if ezConfirm("create a new set"):
         common.currentSet = Set(
             title = ezPromptStr("title", "Untitled Set", True),
