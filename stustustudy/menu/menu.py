@@ -31,9 +31,12 @@ class Menu:
         self.caseSensitive = caseSensitive
         self.populator = populator
 
-    # (Internal) Filter Items Only: Filters out any non-MenuItem items.
-    def __filteredItemsOnly(self):
-        return [item for item in self.items if isinstance(item, MenuItem)]
+    # (Internal) Filter Items Only: Filters out any disabled and/or non-MenuItem items.
+    def __filteredItemsOnly(self, allowDisabled:bool):
+        if (allowDisabled):
+            return [item for item in self.items if isinstance(item, MenuItem)]
+        else:
+            return [item for item in self.items if (isinstance(item, MenuItem) and not(item.disabled))]
 
     # Find Item: Checks if an item with a specific key exists and returns it.
     def findItem(self, key:str):
@@ -43,13 +46,17 @@ class Menu:
         fixedItemKey = (lambda key : key) if self.caseSensitive else (lambda key : key.upper())
         
         # Find item.
-        items = self.__filteredItemsOnly()
+        items = self.__filteredItemsOnly(True)
         for item in items:
             if fixedItemKey(item.key) == fixedTargetKey:
                 return item
                 
         # Fallback.
         return None
+    
+    # Find Items: Finds multiple items.
+    def findItems(self, keys:list[str]):
+        return [self.findItem(key) for key in keys]
     
     # (Internal) Add To List: Adds an item to the list at the end or at an index.
     def __addToList(self, newItem:MenuItem|MenuSeparator, index:int|None = None):
@@ -78,6 +85,15 @@ class Menu:
     def addItem(self, item:MenuItem, index:int|None = None):
         self.__addToList(item, index)
 
+    # Set disabled: Sets the disabled state of an item.
+    def setDisabled(self, key:str, isDisabled:bool):
+        self.findItem(key).disabled = isDisabled
+
+    # Set disableds: Sets the disabled states of items.
+    def setDisableds(self, keys:list[str], isDisabled:bool):
+        for item in self.findItems(keys):
+            item.disabled = isDisabled
+
     # Separate: Adds a seprator to the list.
     def separate(self, index:int|None = None):
         self.__addToList(MenuSeparator(), index)
@@ -95,7 +111,10 @@ class Menu:
         for item in self.items:
             match item:
                 case MenuItem():
-                    table.add_row(item.key, f"[b]{item.name}[/b]", f"[i]{item.description}[/i]" if item.description else "")
+                    if item.disabled:
+                        table.add_row(f"[dim]{item.key}[/dim]", f"[dim]{item.name}[/dim]", f"[dim][i]{item.description}[/i][/dim]" if item.description else "")
+                    else:
+                        table.add_row(item.key, f"[b]{item.name}[/b]", f"[i]{item.description}[/i]" if item.description else "")
                 case MenuSeparator():
                     table.add_section()
         
@@ -106,7 +125,7 @@ class Menu:
     def prompt(self):
 
         # Get input.
-        items = self.__filteredItemsOnly()
+        items = self.__filteredItemsOnly(False)
         if (self.caseSensitive):
             choices = [item.key for item in items]
         else:

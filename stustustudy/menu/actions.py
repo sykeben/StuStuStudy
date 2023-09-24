@@ -44,13 +44,26 @@ def textAction(title:str|None = None, subtitle:str|None = None, text:str|None = 
         return transport
     return action
 
-# Placehoder action: Displays error.
+# Error action: Display an error.
+def errorAction(errorName:str, errorNotes:str):
+    return textAction(title="[red]Error[/red]", subtitle=f"[red]{errorName}[/red]", text=errorNotes)
+
+# Placehoder action: Displays a non-implemented error.
 def placeholderAction():
-    return textAction(title="[red]Error[/red]", subtitle="[red]Not Implemented[/red]", text="This function has not been implemented yet.")
+    return errorAction(errorName="Not Implimented", errorNotes="This function has not been implemented yet.")
 
 # Static action: Executes a static-like method that doesn't modify the transport.
 def staticAction(method:Callable[[MenuItem], None]):
     def action(item:MenuItem, transport:MenuTransport):
         method(item)
         return transport
+    return action
+
+# Locked action: Executes an action if and only if a method returns True.
+def lockedAction(errorMessage:str, checkMethod:Callable[[MenuItem], bool], subAction:Callable[[object, MenuTransport], MenuTransport]):
+    def action(item:MenuItem, transport:MenuTransport):
+        if (checkMethod()):
+            return subAction(item, transport)
+        else:
+            return errorAction(errorName="Invalid Action", errorNotes=errorMessage)
     return action

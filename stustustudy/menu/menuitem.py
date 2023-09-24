@@ -10,7 +10,8 @@ class MenuItem:
             self,
             key:str, name:str,
             description:str|None = None,
-            action:Callable[[object, MenuTransport], MenuTransport]|None = None
+            action:Callable[[object, MenuTransport], MenuTransport]|None = None,
+            disabled:bool = False
         ):
 
         # Set parameters.
@@ -18,6 +19,7 @@ class MenuItem:
         self.name = name
         self.description = description
         self.action = action
+        self.disabled = disabled
 
     # Activate method: Activates item action (if exists).
     def activate(self, transport:MenuTransport|None = None):
