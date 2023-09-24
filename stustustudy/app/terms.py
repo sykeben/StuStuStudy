@@ -14,6 +14,14 @@ def editTermStaticAction(item:MenuItem):
     index = int(item.key) - 1
     term = common.currentSet.terms[index]
 
+    # Define term edit static action.
+    def termTermStaticAction(item:MenuItem):
+        term.term = Prompt.ask("Enter new term (empty to cancel change)", default=term.term, show_default=False)
+
+    # Define definition edit static action.
+    def termDefinitionStaticAction(item:MenuItem):
+        term.definition = Prompt.ask("Enter new definition (empty to cancel change)", default=term.definition, show_default=False)
+
     # Define populator for menu.
     def editingMenuPopulator(menu:Menu):
         common.currentSetPopulator(menu)
@@ -24,8 +32,8 @@ def editTermStaticAction(item:MenuItem):
     editingMenu = Menu("Edit Term", populator=editingMenuPopulator)
     editingMenu.createItem("X", "Exit", "Exits this menu.", actions.exitAction())
     editingMenu.separate()
-    editingMenu.createItem("T", "Term", "", actions.placeholderAction())
-    editingMenu.createItem("D", "Definition", "", actions.placeholderAction())
+    editingMenu.createItem("T", "Term", "", actions.staticAction(termTermStaticAction))
+    editingMenu.createItem("D", "Definition", "", actions.staticAction(termDefinitionStaticAction))
     editingMenu.separate()
     editingMenu.createItem("R", "Remove Term", "Removes this term from the set.", actions.placeholderAction())
     editingMenu.createItem("M", "Move Term", "Moves this term up/down.", actions.placeholderAction())

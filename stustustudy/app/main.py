@@ -2,12 +2,22 @@
 from rich.prompt import Confirm, Prompt
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
-from ..set import Set
+from ..set import Set, SetTerm
 from .properties import propertiesMenu
 from .terms import termsMenu
 
 # Initialize globals.
 common.initCommon()
+
+# TODO - Remove this after done.
+# Load testing set.
+common.currentSet = Set("Testing Set", "A test set for development.", [
+    SetTerm("Term 1", "This is term #1."),
+    SetTerm("Term 2", "This is term #2."),
+    SetTerm("Term 3", "This is term #3."),
+    SetTerm("Term 4", "This is term #4."),
+    SetTerm("Term 5", "This is term #5.")
+])
 
 # Define main menu populator.
 def mainMenuPopulator(menu:Menu):
