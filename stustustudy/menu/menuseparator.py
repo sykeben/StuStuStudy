@@ -1,0 +1,8 @@
+# Menu separator class.
+class MenuSeparator:
+
+    # Initializor.
+    def __init__(self):
+
+        pass
+    
