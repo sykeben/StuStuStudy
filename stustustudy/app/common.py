@@ -9,7 +9,7 @@ def initCommon():
     lastSaved = None
 
 # Define current set populator.
-def currentSetPopulator(menu:Menu):
+def currentSetPopulator(menu:Menu, firstTime:bool):
     global currentSet, currentFile, lastSaved
     title = currentSet.title if currentSet else "No Set"
     file = (currentFile if currentFile else "Not Saved") if currentSet else "No File"

@@ -1,11 +1,10 @@
 # Imports.
-from rich.prompt import Confirm
 from typing import Callable
 from .menu import Menu
 from .menuitem import MenuItem
 from .menutransport import MenuTransport
 from ..console import console
-from ..utils.ui import pause
+from ..utils.ui import ezPause, ezConfirm
 
 # Submenu action: Activates auto on a submenu.
 def submenuAction(submenu:Menu):
@@ -18,7 +17,7 @@ def submenuAction(submenu:Menu):
 def exitAction(confirm:bool = False):
     if (confirm):
         def action(item:MenuItem, transport:MenuTransport):
-            if (Confirm.ask("Are you sure you want to exit?")):
+            if (ezConfirm("exit")):
                 transport.setExit()
             return transport
     else:
@@ -40,7 +39,7 @@ def textAction(title:str|None = None, subtitle:str|None = None, text:str|None = 
             console.print(text)
         if (title or subtitle or text):
             console.print()
-        pause()
+        ezPause()
         return transport
     return action
 

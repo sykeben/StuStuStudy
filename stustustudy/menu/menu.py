@@ -1,10 +1,10 @@
 # Imports.
 from __future__ import annotations
 from rich.table import Table
-from rich.prompt import Prompt
 from rich import box
 from typing import Callable
 from ..console import console
+from ..utils.ui import ezPromptStr
 from .menuitem import MenuItem
 from .menuseparator import MenuSeparator
 from .menutransport import MenuTransport
@@ -17,16 +17,14 @@ class Menu:
             self,
             title:str|None = None,
             subtitle:str|None = None,
-            promptText:str = "Choose",
             items:list[MenuItem|MenuSeparator]|None = None,
             caseSensitive:bool = False,
-            populator:Callable[[Menu],None]|None = None
+            populator:Callable[[Menu,bool],None]|None = None
         ):
 
         # Set parameters.
         self.title = title
         self.subtitle = subtitle
-        self.promptText = promptText
         self.items = items if items else list()
         self.caseSensitive = caseSensitive
         self.populator = populator
@@ -130,7 +128,7 @@ class Menu:
             choices = [item.key for item in items]
         else:
             choices = [item.key.lower() for item in items] + [item.key.upper() for item in items]
-        result = Prompt.ask(self.promptText, choices=choices, show_choices=False)
+        result = ezPromptStr("choice", choiceValues=choices)
 
         # Return selected option.
         return result
@@ -146,19 +144,21 @@ class Menu:
             return item.activate(transport if transport else MenuTransport())
         
     # Populate method: Populates the menu using an external method.
-    def populate(self):
+    def populate(self, firstTime:bool = False):
         if (self.populator):
-            self.populator(self)
+            self.populator(self, firstTime)
         
     # Auto method: Automatically handles menu.
     def auto(self, forever:bool = True):
 
         # Main loop.
+        firstTime = True
         lastTransport = MenuTransport()
         while forever and not(lastTransport.exitFlag):
 
             # Populate menu.
-            self.populate()
+            self.populate(firstTime)
+            if (firstTime): firstTime = False
 
             # Display menu.
             console.clear()

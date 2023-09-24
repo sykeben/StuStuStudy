@@ -1,8 +1,8 @@
 # Imports.
-from rich.prompt import Confirm, Prompt
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
 from ..set import Set, SetTerm
+from ..utils import ezPromptStr, ezConfirm
 from .properties import propertiesMenu
 from .terms import termsMenu
 
@@ -20,16 +20,16 @@ common.currentSet = Set("Testing Set", "A test set for development.", [
 ])
 
 # Define main menu populator.
-def mainMenuPopulator(menu:Menu):
-    common.currentSetPopulator(menu)
+def mainMenuPopulator(menu:Menu, firstTime:bool):
+    common.currentSetPopulator(menu, firstTime)
     menu.setDisableds(["FS", "FSA", "FC", "EP", "ET", "SF", "SL", "SQ"], not(bool(common.currentSet)))
 
 # Define new set static action.
 def newSetStaticAction(item:MenuItem):
-    if Confirm.ask("Are you sure you want to create a new set?"):
+    if ezConfirm("create a new set"):
         common.currentSet = Set(
-            title=Prompt.ask("Give this set a title", default="Untitled Set"),
-            description=Prompt.ask("Give this set a description", default="")
+            title = ezPromptStr("title", "Untitled Set", True),
+            description = ezPromptStr("description", "No Description", True)
         )
         common.currentFile = None
 
