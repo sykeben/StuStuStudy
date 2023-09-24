@@ -7,6 +7,12 @@
 	"settings": {
 		"files.exclude": {
 			"**/__pycache__": true
-		}
+		},
+		"VSCodeCounter.exclude": [
+			"**/.gitignore",
+			"**/.vscode/**",
+			"**/node_modules/**",
+			"**/__pycache__"
+		]
 	}
 }
