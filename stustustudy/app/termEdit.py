@@ -2,6 +2,7 @@
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
 from ..utils.ui import ezTitle, ezPromptStr
+from .termMove import termMoveMenuActivate
 
 # Define globals.
 termIndex = -1
@@ -19,6 +20,10 @@ def termDefinitionStaticAction(item:MenuItem):
     ezTitle("Changing Term's Definition")
     termObject.definition = ezPromptStr("new definition", termObject.definition, defaultAsCurrent=True)
 
+# Define term move menu static action.
+def termMoveMenuStaticAction(item:MenuItem):
+    termMoveMenuActivate(termIndex, termObject)
+
 # Define populator for term edit menu.
 def termEditMenuPopulator(menu:Menu, firstTime:bool):
     global termIndex, termObject
@@ -35,7 +40,7 @@ termEditMenu.createItem("T", "Term", "", actions.staticAction(termTermStaticActi
 termEditMenu.createItem("D", "Definition", "", actions.staticAction(termDefinitionStaticAction))
 termEditMenu.separate()
 termEditMenu.createItem("R", "Remove Term", "Removes this term from the set.", actions.placeholderAction())
-termEditMenu.createItem("M", "Move Term", "Moves this term up/down.", actions.placeholderAction())
+termEditMenu.createItem("M", "Move Term", "Moves this term up/down.", actions.staticAction(termMoveMenuStaticAction, exitAfter = True))
 termEditMenu.createItem("I", "Insert Term", "Inserts a term after this term.", actions.placeholderAction())
 
 # Define menu static action.

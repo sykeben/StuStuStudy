@@ -53,10 +53,15 @@ def placeholderAction():
     return errorAction(errorName="Not Implimented", errorNotes="This function has not been implemented yet.")
 
 # Static action: Executes a static-like method that doesn't modify the transport.
-def staticAction(method:Callable[[MenuItem], None]):
-    def action(item:MenuItem, transport:MenuTransport):
-        method(item)
-        return transport
+def staticAction(method:Callable[[MenuItem], None], exitAfter:bool = False):
+    if exitAfter:
+        def action(item:MenuItem, transport:MenuTransport):
+            method(item)
+            return exitAction()(item, transport)
+    else:
+        def action(item:MenuItem, transport:MenuTransport):
+            method(item)
+            return transport
     return action
 
 # Locked action: Executes an action if and only if a method returns True.
