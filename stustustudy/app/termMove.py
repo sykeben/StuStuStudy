@@ -2,7 +2,6 @@
 import stustustudy.app.common as common
 from ..menu import Menu, MenuItem, actions
 from ..set import SetTerm
-from ..utils.ui import ezTitle, ezPromptStr
 
 # Define globals.
 termIndex = -1
@@ -54,8 +53,11 @@ def termMoveMenuActivate(newIndex:int, newObject:SetTerm):
     termObject = newObject
 
     # Start menu.
-    termMoveMenu.auto()
+    exitNeeded = (termMoveMenu.auto() != "X")
 
     # Clear globals.
     termIndex = -1
     termObject = None
+
+    # Return exit flag.
+    return exitNeeded

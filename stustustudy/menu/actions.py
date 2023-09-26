@@ -64,6 +64,15 @@ def staticAction(method:Callable[[MenuItem], None], exitAfter:bool = False):
             return transport
     return action
 
+# Exiting static action: Executes a static action and executes if it returns true.
+def exitingStaticAction(method:Callable[[MenuItem], bool]):
+    def action(item:MenuItem, transport:MenuTransport):
+        if method(item):
+            return exitAction()(item, transport)
+        else:
+            return transport
+    return action
+
 # Locked action: Executes an action if and only if a method returns True.
 def lockedAction(errorMessage:str, checkMethod:Callable[[MenuItem], bool], subAction:Callable[[object, MenuTransport], MenuTransport]):
     def action(item:MenuItem, transport:MenuTransport):
