@@ -12,12 +12,18 @@ def propertiesMenuPopulator(menu:Menu, firstTime:bool):
 # Define set title static action.
 def setTitleStaticAction(item:MenuItem):
     ezTitle("Changing Set Title")
-    common.currentSet.title = ezPromptStr("new title", common.currentSet.title, defaultAsCurrent=True)
+    newTitle = ezPromptStr("new title", common.currentSet.title, defaultAsCurrent=True)
+    if (newTitle != common.currentSet.title):
+        common.currentSet.title = newTitle
+        common.modified = True
 
 # Define set description static action.
 def setDescriptionStaticAction(item:MenuItem):
     ezTitle("Changing Set Description")
-    common.currentSet.description = ezPromptStr("new description", common.currentSet.description, defaultAsCurrent=True)
+    newDescription = ezPromptStr("new description", common.currentSet.description, defaultAsCurrent=True)
+    if (newDescription != common.currentSet.description):
+        common.currentSet.description = newDescription
+        common.modified = True
 
 # Define set properties menu.
 propertiesMenu = Menu("Set Properties", populator=propertiesMenuPopulator)

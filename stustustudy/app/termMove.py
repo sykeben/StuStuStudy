@@ -17,6 +17,9 @@ def termMoveStaticAction(item:MenuItem):
     else:
         common.currentSet.moveTerm(termIndex, None)
 
+    # Set modified flag.
+    common.modified = True
+
 # Define populator for set terms menu.
 def termMoveMenuPopulator(menu:Menu, firstTime:bool):
     common.currentSetPopulator(menu, firstTime)

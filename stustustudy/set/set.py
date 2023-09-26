@@ -1,4 +1,6 @@
 # Imports.
+from io import TextIOWrapper
+import json
 from .setterm import SetTerm
 
 # Set class.
@@ -39,3 +41,42 @@ class Set:
     # Move Term: Moves a term from index #x to #y.
     def moveTerm(self, nX:int, nY:int):
         self.addTerm(self.removeTerm(nX), nY)
+
+    # (Static) From JSON: Creates a set from a JSON file.
+    @staticmethod
+    def fromJSON(filePointer:TextIOWrapper):
+        
+        # Load data.
+        data = json.load(filePointer)
+        properties = data["properties"]
+        terms = data["terms"]
+
+        # Create set from data.
+        newSet = Set(properties["title"], properties["description"])
+        for term in terms:
+            newSet.createTerm(term["term"], term["definition"])
+
+        # Return.
+        return newSet
+    
+    # To JSON: Creates/overwrites the set to a JSON file.
+    def toJSON(self, filePointer:TextIOWrapper):
+
+        # Initialize data.
+        data = {
+
+            # Set properties.
+            "properties": {
+                "title": self.title,
+                "description": self.description
+            },
+
+            # Terms list.
+            "terms": [
+                { "term": term.term, "definition": term.definition } for term in self.terms
+            ]
+
+        }
+
+        # Save data.
+        json.dump(data, filePointer)

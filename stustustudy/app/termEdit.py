@@ -12,13 +12,19 @@ termObject = None
 def termTermStaticAction(item:MenuItem):
     global termObject
     ezTitle("Changing a Term")
-    termObject.term = ezPromptStr("new term", termObject.term, defaultAsCurrent=True)
+    newTerm = ezPromptStr("new term", termObject.term, defaultAsCurrent=True)
+    if (newTerm != termObject.term):
+        termObject.term = newTerm
+        common.modified = True
 
 # Define definition edit static action.
 def termDefinitionStaticAction(item:MenuItem):
     global termObject
     ezTitle("Changing a Term's Definition")
-    termObject.definition = ezPromptStr("new definition", termObject.definition, defaultAsCurrent=True)
+    newDefinition = ezPromptStr("new definition", termObject.definition, defaultAsCurrent=True)
+    if (newDefinition != termObject.term):
+        termObject.definition = newDefinition
+        common.modified = True
 
 # Define term remove exiting static action.
 def termRemoveExitingStaticAction(item:MenuItem):
@@ -26,6 +32,7 @@ def termRemoveExitingStaticAction(item:MenuItem):
     ezTitle("Removing a Term")
     if (ezConfirm("remove this term")):
         common.currentSet.removeTerm(termIndex)
+        common.modified = True
         return True
     else:
         return False
@@ -39,10 +46,11 @@ def insertTermStaticAction(item:MenuItem):
     global termIndex
     ezTitle("Inserting a New Term")
     common.currentSet.createTerm(
-        ezPromptStr("term"),
-        ezPromptStr("definition"),
+        ezPromptStr("term", ""),
+        ezPromptStr("definition", ""),
         termIndex
     )
+    common.modified = True
 
 # Define populator for term edit menu.
 def termEditMenuPopulator(menu:Menu, firstTime:bool):

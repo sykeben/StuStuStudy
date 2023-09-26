@@ -8,9 +8,10 @@ from .termEdit import termEditMenuStaticAction
 def addTermStaticAction(item:MenuItem):
     ezTitle("Creating a New Term")
     common.currentSet.createTerm(
-        ezPromptStr("term"),
-        ezPromptStr("definition")
+        ezPromptStr("term", ""),
+        ezPromptStr("definition", "")
     )
+    common.modified = True
 
 # Define populator for set terms menu.
 def termsMenuPopulator(menu:Menu, firstTime:bool):

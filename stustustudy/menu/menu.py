@@ -128,7 +128,7 @@ class Menu:
             choices = [item.key for item in items]
         else:
             choices = [item.key.lower() for item in items] + [item.key.upper() for item in items]
-        result = ezPromptStr("choice", choiceValues=choices)
+        result = ezPromptStr("choice", choiceValues=choices, blankAllowed=False)
 
         # Return selected option.
         return result
