@@ -7,13 +7,14 @@ from ..set import Set
 from ..utils import ezTitle, ezPromptStr, ezConfirm, ezUpdate, ezFinish
 from .properties import propertiesMenu
 from .terms import termsMenu
+from .cards import cardsMenu
 
 # Initialize globals.
 common.initCommon()
 
 # Define quit static action.
 def quitExitingStaticAction(item:MenuItem):
-    ezTitle("Quitting StuStuStudy")
+    ezTitle("[b][red]<[/red][/b] Quitting StuStuStudy")
     if ezConfirm("quit"):
         if not(common.modified) or ezConfirm("discard your unsaved work"):
             return True
@@ -21,7 +22,7 @@ def quitExitingStaticAction(item:MenuItem):
 
 # Define new set static action.
 def newSetStaticAction(item:MenuItem):
-    ezTitle("Creating a New Set")
+    ezTitle("[b][yellow]•[/yellow][/b] Creating a New Set")
     if ezConfirm("create a new set"):
         if not(common.modified) or ezConfirm("discard your unsaved work"):
             common.currentSet = Set(
@@ -45,45 +46,46 @@ def handleFileError(action:str, reason:str, isReading:bool = True, isSavingAs:bo
 def openSetStaticAction(item:MenuItem):
 
     # Initialize and confirm action.
-    ezTitle("Opening Set")
-    if not(common.modified) or ezConfirm("discard your unsaved work"):
+    ezTitle("[b][yellow]~[/yellow][/b] Opening Set")
+    if ezConfirm("open a different set"):
+        if not(common.modified) or ezConfirm("discard your unsaved work"):
 
-        # Attempt to get file path.
-        filePath = Path(ezPromptStr("full file path (*.study)", blankAllowed=False))
-        if (filePath.is_file()):
-            if (filePath.suffix == ".study"):
+            # Attempt to get file path.
+            filePath = Path(ezPromptStr("full file path (*.study)", blankAllowed=False))
+            if (filePath.is_file()):
+                if (filePath.suffix == ".study"):
 
-                # Attempt to open file.
-                ezUpdate("Opening file for reading...")
-                try:
-                    filePointer = filePath.open("r")
-                except OSError:
-                    handleFileError("open file", "system refused")
-                    return
-                except:
-                    handleFileError("open file", "unknown error")
-                    return
-                common.currentFile = filePath
-                
-                # Attempt to load set.
-                ezUpdate("Reading set from file...")
-                try:
-                    common.currentSet = Set.fromJSON(filePointer)
-                except:
-                    handleFileError("read set", "JSON error")
+                    # Attempt to open file.
+                    ezUpdate("Opening file for reading...")
+                    try:
+                        filePointer = filePath.open("r")
+                    except OSError:
+                        handleFileError("open file", "system refused")
+                        return
+                    except:
+                        handleFileError("open file", "unknown error")
+                        return
+                    common.currentFile = filePath
+                    
+                    # Attempt to load set.
+                    ezUpdate("Reading set from file...")
+                    try:
+                        common.currentSet = Set.fromJSON(filePointer)
+                    except:
+                        handleFileError("read set", "JSON error")
+                        filePointer.close()
+                        return
+                    
+                    # Finish up.
+                    ezUpdate("Finishing up...")
                     filePointer.close()
-                    return
-                
-                # Finish up.
-                ezUpdate("Finishing up...")
-                filePointer.close()
-                common.modified = False
+                    common.modified = False
 
-                # Display completion.
-                ezFinish(True)
-                
-            else: handleFileError("open file", "wrong type")
-        else: handleFileError("find file", "does not exist or is invalid")
+                    # Display completion.
+                    ezFinish(True)
+                    
+                else: handleFileError("open file", "wrong type")
+            else: handleFileError("find file", "does not exist or is invalid")
 
 # Define set writer.
 def writeSet(isSavingAs:bool = False, fallbackFile:Path|None = None):
@@ -119,15 +121,15 @@ def writeSet(isSavingAs:bool = False, fallbackFile:Path|None = None):
 
 # Define save set static action.
 def saveSetStaticAction(item:MenuItem):
-    ezTitle("Saving Set")
+    ezTitle("[b][yellow]†[/yellow][/b] Saving Set")
     writeSet()
 
 # Define save set as static action.
 def saveSetAsStaticAction(item:MenuItem):
 
     # Initialize and confirm action.
-    ezTitle("Saving Set As")
-    if not(common.currentFile) or ezConfirm("save this set as a new file"):
+    ezTitle("[b][yellow]‡[/yellow][/b] Saving Set As")
+    if ezConfirm("save this set as a new file"):
 
         # Attempt to get file path.
         filePath = Path(ezPromptStr("full file path (*.study)", blankAllowed=False))
@@ -144,7 +146,7 @@ def saveSetAsStaticAction(item:MenuItem):
 
 # Define close set static action.
 def closeSetStaticAction(item:MenuItem):
-    ezTitle("Closing this Set")
+    ezTitle("[b][yellow]<[/yellow][/b] Closing this Set")
     if ezConfirm("close this set"):
         if not(common.modified) or ezConfirm("discard your unsaved work"):
             common.currentSet = None
@@ -158,21 +160,21 @@ def mainMenuPopulator(menu:Menu, firstTime:bool):
     menu.setDisabled("FS", not(common.currentSet) or not(common.currentFile))
 
 # Define main menu.
-mainMenu = Menu("Main Menu", populator=mainMenuPopulator)
-mainMenu.createItem("AQ", "Quit", "Quits StuStuStudy (unsaved work may be lost).", actions.exitingStaticAction(quitExitingStaticAction))
+mainMenu = Menu("[b][green]>[/green][/b] Main Menu", populator=mainMenuPopulator)
+mainMenu.createItem("AQ", "[red]<[/red] Quit", "Quits StuStuStudy (unsaved work may be lost).", actions.exitingStaticAction(quitExitingStaticAction))
 mainMenu.separate()
-mainMenu.createItem("FN", "New", "Creates a new set file.", actions.staticAction(newSetStaticAction))
-mainMenu.createItem("FO", "Open", "Opens an existing set file.", actions.staticAction(openSetStaticAction))
-mainMenu.createItem("FS", "Save", "Saves the currently open set file.", actions.staticAction(saveSetStaticAction))
-mainMenu.createItem("FSA", "Save As", "Saves the currently open set file under another name.", actions.staticAction(saveSetAsStaticAction))
-mainMenu.createItem("FC", "Close", "Closes the currently open set file.", actions.staticAction(closeSetStaticAction))
+mainMenu.createItem("FN", "[yellow]•[/yellow] New", "Creates a new set file.", actions.staticAction(newSetStaticAction))
+mainMenu.createItem("FO", "[yellow]~[/yellow] Open", "Opens an existing set file.", actions.staticAction(openSetStaticAction))
+mainMenu.createItem("FS", "[yellow]†[/yellow] Save", "Saves the currently open set file.", actions.staticAction(saveSetStaticAction))
+mainMenu.createItem("FSA", "[yellow]‡[/yellow] Save As", "Saves the currently open set file under another name.", actions.staticAction(saveSetAsStaticAction))
+mainMenu.createItem("FC", "[yellow]<[/yellow] Close", "Closes the currently open set file.", actions.staticAction(closeSetStaticAction))
 mainMenu.separate()
-mainMenu.createItem("EP", "Properties", "Opens the set's properties for editing.", actions.submenuAction(propertiesMenu))
-mainMenu.createItem("ET", "Terms", "Opens the set's term list for editing.", actions.submenuAction(termsMenu))
+mainMenu.createItem("EP", "[white]ƒ[/white] Properties", "Opens the set's properties for editing.", actions.submenuAction(propertiesMenu))
+mainMenu.createItem("ET", "[white]§[/white] Terms", "Opens the set's term list for editing.", actions.submenuAction(termsMenu))
 mainMenu.separate()
-mainMenu.createItem("SF", "Flashcards", "Starts flashcard mode.", actions.placeholderAction())
-mainMenu.createItem("SL", "Learn", "Starts learn mode.", actions.placeholderAction())
-mainMenu.createItem("SQ", "Quiz", "Starts quiz mode.", actions.placeholderAction())
+mainMenu.createItem("SF", "[green]¶[/green] Flashcards", "Starts flashcard mode.", actions.submenuAction(cardsMenu))
+mainMenu.createItem("SL", "[green]>[/green] Learn", "Starts learn mode.", actions.placeholderAction())
+mainMenu.createItem("SQ", "[green]Ø[/green] Quiz", "Starts quiz mode.", actions.placeholderAction())
 
 # Main method.
 def main():

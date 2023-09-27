@@ -11,7 +11,7 @@ def propertiesMenuPopulator(menu:Menu, firstTime:bool):
 
 # Define set title static action.
 def setTitleStaticAction(item:MenuItem):
-    ezTitle("Changing Set Title")
+    ezTitle("[b][white]¶[/white][/b] Changing Set Title")
     newTitle = ezPromptStr("new title", common.currentSet.title, defaultAsCurrent=True)
     if (newTitle != common.currentSet.title):
         common.currentSet.title = newTitle
@@ -19,15 +19,15 @@ def setTitleStaticAction(item:MenuItem):
 
 # Define set description static action.
 def setDescriptionStaticAction(item:MenuItem):
-    ezTitle("Changing Set Description")
+    ezTitle("[b][white]§[/white][/b] Changing Set Description")
     newDescription = ezPromptStr("new description", common.currentSet.description, defaultAsCurrent=True)
     if (newDescription != common.currentSet.description):
         common.currentSet.description = newDescription
         common.modified = True
 
 # Define set properties menu.
-propertiesMenu = Menu("Set Properties", populator=propertiesMenuPopulator)
-propertiesMenu.createItem("X", "Exit", "Exits this menu.", actions.exitAction())
+propertiesMenu = Menu("[b][white]ƒ[/white][/b] Set Properties", populator=propertiesMenuPopulator)
+propertiesMenu.createItem("X", "[red]<[/red] Exit", "Exits this menu.", actions.exitAction())
 propertiesMenu.separate()
-propertiesMenu.createItem("T", "Set Title", "", actions.staticAction(setTitleStaticAction))
-propertiesMenu.createItem("D", "Set Description", "", actions.staticAction(setDescriptionStaticAction))
+propertiesMenu.createItem("T", "[white]¶[/white] Set Title", "", actions.staticAction(setTitleStaticAction))
+propertiesMenu.createItem("D", "[white]§[/white] Set Description", "", actions.staticAction(setDescriptionStaticAction))

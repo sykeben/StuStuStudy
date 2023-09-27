@@ -52,13 +52,13 @@ def ezPromptStr(
 
     # Main loop.
     lastValue = None
-    while not(lastValue):
+    while (lastValue == None):
 
         # Get value.
         lastValue = Prompt.ask(f"[b][cyan]Enter {fieldText}[/cyan][/b]", default=defaultValue, show_default=showDefault, choices=choiceValues, show_choices=showChoices)
 
         # Assert blank.
-        if blankAllowed and not(lastValue):
+        if blankAllowed and (lastValue == None):
             lastValue = ""
 
     # Return.

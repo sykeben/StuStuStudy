@@ -27,8 +27,8 @@ class Set:
             self.terms.append(newTerm)
 
     # Create Term (new): Adds a new term to the set.
-    def createTerm(self, term:str = "", definition:str = "", index:int|None = None):
-        self.__addToTerms(SetTerm(term, definition), index)
+    def createTerm(self, term:str = "", definition:str = "", starred:bool = False, index:int|None = None):
+        self.__addToTerms(SetTerm(term, definition, starred), index)
 
     # Add Term (existing): Adds an existing term to the set.
     def addTerm(self, term:SetTerm, index:int|None = None):
@@ -54,7 +54,7 @@ class Set:
         # Create set from data.
         newSet = Set(properties["title"], properties["description"])
         for term in terms:
-            newSet.createTerm(term["term"], term["definition"])
+            newSet.createTerm(term["term"], term["definition"], (term["starred"] == "True"))
 
         # Return.
         return newSet
@@ -73,7 +73,11 @@ class Set:
 
             # Terms list.
             "terms": [
-                { "term": term.term, "definition": term.definition } for term in self.terms
+                {
+                    "term": term.term,
+                    "definition": term.definition,
+                    "starred": ("True" if term.starred else "False")
+                } for term in self.terms
             ]
 
         }

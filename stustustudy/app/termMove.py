@@ -28,24 +28,23 @@ def termMoveMenuPopulator(menu:Menu, firstTime:bool):
     menu.items.clear()
 
     # Add header.
-    menu.title = f"Select Term to Move Before"
-    menu.createItem("X", "Exit", "Exits this menu.", actions.exitAction())
+    menu.createItem("X", "[red]<[/red] Exit", "Exits this menu.", actions.exitAction())
     menu.separate()
 
     # Generate items.
     menu.items += [MenuItem(
         str(index+1),
-        term.term,
+        "[white]»[/white] " + term.term,
         term.definition,
         actions.staticAction(termMoveStaticAction, exitAfter=True)
     ) for index, term in enumerate(common.currentSet.terms)]
     menu.separate()
 
     # Add end item.
-    menu.createItem("E", "End", "Move to end of list.", actions.staticAction(termMoveStaticAction, exitAfter=True))
+    menu.createItem("E", "[white]>[/white] End", "Move to end of list.", actions.staticAction(termMoveStaticAction, exitAfter=True))
 
 # Define term move menu.
-termMoveMenu = Menu("Terms", populator=termMoveMenuPopulator)
+termMoveMenu = Menu("[b][yellow]![/yellow][/b] Moving a Term", populator=termMoveMenuPopulator)
 
 # Define menu static action.
 def termMoveMenuActivate(newIndex:int, newObject:SetTerm):
