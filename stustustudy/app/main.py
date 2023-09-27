@@ -11,6 +11,14 @@ from .terms import termsMenu
 # Initialize globals.
 common.initCommon()
 
+# Define quit static action.
+def quitExitingStaticAction(item:MenuItem):
+    ezTitle("Quitting StuStuStudy")
+    if ezConfirm("quit"):
+        if not(common.modified) or ezConfirm("discard your unsaved work"):
+            return True
+    return False
+
 # Define new set static action.
 def newSetStaticAction(item:MenuItem):
     ezTitle("Creating a New Set")
@@ -151,7 +159,7 @@ def mainMenuPopulator(menu:Menu, firstTime:bool):
 
 # Define main menu.
 mainMenu = Menu("Main Menu", populator=mainMenuPopulator)
-mainMenu.createItem("AQ", "Quit", "Quits StuStuStudy (unsaved work may be lost).", actions.exitAction(confirm=True))
+mainMenu.createItem("AQ", "Quit", "Quits StuStuStudy (unsaved work may be lost).", actions.exitingStaticAction(quitExitingStaticAction))
 mainMenu.separate()
 mainMenu.createItem("FN", "New", "Creates a new set file.", actions.staticAction(newSetStaticAction))
 mainMenu.createItem("FO", "Open", "Opens an existing set file.", actions.staticAction(openSetStaticAction))
