@@ -14,8 +14,10 @@ def cardFlashMenuPopulator(menu:Menu, firstTime:bool):
 cardFlashMenu = Menu(populator=cardFlashMenuPopulator)
 cardFlashMenu.createItem("X", "[red]<[/red] Exit", "Return to flashcards menu.")
 cardFlashMenu.separate()
+cardFlashMenu.createItem("S", "[white]@[/white] Star/Unstar", "Toggle star on this term.")
+cardFlashMenu.separate()
 cardFlashMenu.createItem(",", "[green]{[/green] Previous", "Move one card back.")
-cardFlashMenu.createItem("F", "[green]@[/green] Flip", "Flip the flashcard.")
+cardFlashMenu.createItem("F", "[green]![/green] Flip", "Flip the flashcard.")
 cardFlashMenu.createItem(".", "[green]}[/green] Next", "Move one card forward.")
 
 # Define activation.
@@ -24,6 +26,7 @@ def cardFlashActivate(mode:str, termIndex:int, termObject:SetTerm):
     # Copy values.
     term = termObject.term
     definition = termObject.definition
+    starred = termObject.starred
 
     # Main loop.
     flipped = False
@@ -35,7 +38,7 @@ def cardFlashActivate(mode:str, termIndex:int, termObject:SetTerm):
 
         # Display flashcard.
         panel = Panel(
-            f"[i][dim]{'Definition' if flipped else 'Term'}:[/dim][/i] {definition if flipped else term}",
+            f"{'[b][yellow]*[/yellow][/b]' if starred else ' '}[i][dim]{'Definition' if flipped else 'Term'}:[/dim][/i] {definition if flipped else term}",
             title = f"[b]{mode}: Card {termIndex+1}/{len(common.currentSet.terms)}[/b]",
             box = box.ROUNDED,
             padding = (2, 3)
@@ -51,6 +54,9 @@ def cardFlashActivate(mode:str, termIndex:int, termObject:SetTerm):
         match selection:
             case "X":
                 exitFlag = True
+            case "S":
+                termObject.starred = not(termObject.starred)
+                starred = termObject.starred
             case ",":
                 exitFlag = True
                 return "-1"

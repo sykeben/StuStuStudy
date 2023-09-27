@@ -1,4 +1,5 @@
 # Imports.
+import random
 import stustustudy.app.common as common
 from ..menu import Menu, actions, MenuItem
 from .cardFlash import cardFlashActivate
@@ -52,6 +53,33 @@ def cardsLinearStaticAction(item:MenuItem):
                 case "+1":
                     if (currentIndex < len(common.currentSet.terms)-1): currentIndex += 1
 
+# Define random static action.
+def cardsRandomStaticAction(item:MenuItem):
+
+    # Shuffle cards.
+    shuffledTerms = list(common.currentSet.terms)
+    for i in range(random.randint(1, 3)):
+        random.shuffle(shuffledTerms)
+
+    # Main loop.
+    currentIndex = 0
+    lastSelection = None
+    while (lastSelection != "X"):
+
+        # Get term.
+        currentTerm = shuffledTerms[currentIndex]
+
+        # Activate card.
+        lastSelection = cardFlashActivate("[yellow]¿[/yellow] Random", currentIndex, currentTerm)
+
+        # Process result.
+        match lastSelection:
+            case "-1":
+                if (currentIndex > 0): currentIndex -= 1
+            case "+1":
+                if (currentIndex < len(common.currentSet.terms)-1): currentIndex += 1
+
+
 # Define populator for flashcards menu.
 def cardsMenuPopulator(menu:Menu, firstTime:bool):
     common.currentSetPopulator(menu, firstTime)
@@ -61,4 +89,4 @@ cardsMenu = Menu("[b][green]¶[/green][/b] Flashcards", populator=cardsMenuPopul
 cardsMenu.createItem("X", "[red]<[/red] Exit", "Exits this menu.", actions.exitAction())
 cardsMenu.separate()
 cardsMenu.createItem("L", "[yellow]~[/yellow] Linear", "Study flashcards in order.", actions.staticAction(cardsLinearStaticAction))
-cardsMenu.createItem("R", "[yellow]¿[/yellow] Random", "Study flashcards after shuffling.", actions.placeholderAction())
+cardsMenu.createItem("R", "[yellow]¿[/yellow] Random", "Study flashcards after shuffling.", actions.staticAction(cardsRandomStaticAction))
