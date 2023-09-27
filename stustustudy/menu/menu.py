@@ -154,7 +154,7 @@ class Menu:
         # Main loop.
         firstTime = True
         lastTransport = MenuTransport()
-        while forever and not(lastTransport.exitFlag):
+        while (not(forever) and firstTime) or (forever and not(lastTransport.exitFlag)):
 
             # Populate menu.
             self.populate(firstTime)

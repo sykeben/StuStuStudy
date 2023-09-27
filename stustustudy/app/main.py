@@ -12,7 +12,7 @@ from .cards import cardsMenu
 # Initialize globals.
 common.initCommon()
 
-# Load demo set.
+# TODO: Remove this after done testing.
 from ..set import SetTerm
 common.currentSet = Set("Demo Set", "This is a demo set for testing. If this is loaded by default, something went wrong.", [
     SetTerm("Term #1", "This is term 1.", False),
