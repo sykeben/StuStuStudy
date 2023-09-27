@@ -12,6 +12,22 @@ from .cards import cardsMenu
 # Initialize globals.
 common.initCommon()
 
+# Load demo set.
+from ..set import SetTerm
+common.currentSet = Set("Demo Set", "This is a demo set for testing. If this is loaded by default, something went wrong.", [
+    SetTerm("Term #1", "This is term 1.", False),
+    SetTerm("Term #2", "This is term 2.", False),
+    SetTerm("Term #3", "This is term 3.", False),
+    SetTerm("Term #4", "This is term 4.", False),
+    SetTerm("Term #5", "This is term 5.", False),
+    SetTerm("Term #6", "This is term 6.", False),
+    SetTerm("Term #7", "This is term 7.", False),
+    SetTerm("Term #8", "This is term 8.", False),
+    SetTerm("Term #9", "This is term 9.", False)
+])
+common.currentFile = Path("D:/bsyke/Documents/GitHub/StuStuStudy/demo.study")
+common.modified = False
+
 # Define quit static action.
 def quitExitingStaticAction(item:MenuItem):
     ezTitle("[b][red]<[/red][/b] Quitting StuStuStudy")
